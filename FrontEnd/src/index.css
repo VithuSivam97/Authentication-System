@@ -1,0 +1,618 @@
+@import "tailwindcss";
+
+@source "./index.html";
+@source "./src/**/*.{js,ts,jsx,tsx}";
+
+@theme {
+  --color-hacker-green: #0f0;
+  --color-hacker-dark: #050505;
+  --color-terminal-black: #0c0c0c;
+
+  --font-mono: "VT323", monospace;
+
+  --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-scan: scan 4s ease-in-out infinite;
+
+  @keyframes scan {
+
+    0%,
+    100% {
+      text-shadow: 0 0 2px #0f0;
+      opacity: 1;
+    }
+
+    50% {
+      text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+      opacity: 0.8;
+    }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-terminal-black text-hacker-green font-mono overflow-x-hidden;
+    background-image:
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    text-shadow: 0 0 5px #0f0;
+  }
+
+  ::selection {
+    @apply bg-hacker-green text-terminal-black;
+  }
+
+  input,
+  button {
+    @apply outline-none border-none;
+  }
+}
+
+@layer components {
+  .terminalBox {
+    @apply border border-hacker-green bg-black/80 p-6 rounded shadow-[0_0_10px_#0f0] backdrop-blur-sm relative w-full max-w-md;
+  }
+
+  .terminalWrapper {
+    @apply min-h-screen flex items-center justify-center p-4;
+  }
+
+  .inputField {
+    @apply bg-gray-900/50 border border-gray-700 w-full py-3 px-4 rounded text-hacker-green transition-all duration-300 placeholder-gray-700/50 outline-none;
+  }
+
+  .otpInput {
+    @apply bg-gray-900/50 border border-gray-700 w-full py-3 px-4 rounded text-hacker-green transition-all duration-300 placeholder-gray-700/50 outline-none text-center tracking-[0.5em] font-bold text-xl;
+  }
+
+  .inputField:focus {
+    @apply border-hacker-green;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  }
+
+  .primaryButton {
+    @apply bg-hacker-green text-black px-4 py-2 uppercase font-bold hover:bg-white hover:text-black transition-all duration-300 hover:shadow-[0_0_15px_#0f0] w-full relative overflow-hidden;
+  }
+
+  .buttonOverlay {
+    @apply absolute inset-0 bg-white transform -translate-x-full transition-transform;
+  }
+
+  .primaryButton:hover .buttonOverlay {
+    @apply translate-x-0;
+  }
+
+  .buttonText {
+    @apply relative z-10;
+  }
+
+  .submitWrapper {
+    @apply pt-4;
+  }
+
+  /* Page Layout & Text */
+  .pageHeader {
+    @apply mb-6 text-center;
+  }
+
+  .glitchTitle {
+    @apply text-3xl font-bold animate-scan tracking-widest;
+  }
+
+  .glitchTitleSmall {
+    @apply text-2xl font-bold;
+  }
+
+  .subTitle {
+    @apply text-sm text-gray-400 mt-2;
+  }
+
+  /* Form Elements */
+  .formContainer {
+    @apply space-y-4 relative;
+  }
+
+  .inputGroup {
+    @apply mb-1;
+  }
+
+  .inputLabel {
+    @apply block text-hacker-green text-sm mb-1;
+  }
+
+  .inputWrapper {
+    @apply relative;
+  }
+
+  .passwordToggleBtn {
+    @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-hacker-green/70 hover:text-hacker-green focus:outline-none;
+  }
+
+  /* Links & Feedback */
+  .linkContainerRight {
+    @apply text-right mt-1;
+  }
+
+  .linkContainerCenter {
+    @apply text-center mt-4 text-xs;
+  }
+
+  .linkText {
+    @apply text-xs text-hacker-green/70 hover:text-hacker-green hover:underline decoration-dashed;
+  }
+
+  .linkTextGreen {
+    @apply text-hacker-green hover:underline decoration-dashed;
+  }
+
+  .textGray {
+    @apply text-gray-500;
+  }
+
+  .errorText {
+    @apply text-red-500 text-xs font-mono text-center mb-4 animate-pulse;
+  }
+
+  .successText {
+    @apply text-hacker-green text-xs font-mono text-center mb-4 animate-pulse;
+  }
+
+  /* Error Popup */
+  .popupOverlay {
+    @apply fixed inset-0 flex items-center justify-center bg-black/90 z-50 backdrop-blur-sm p-4;
+  }
+
+  .popupBox {
+    @apply bg-black border-2 border-red-600 p-6 max-w-sm w-full relative animate-pulse-fast;
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
+  }
+
+  .popupHeader {
+    @apply text-red-600 font-bold text-2xl mb-4 flex items-center justify-center gap-2 border-b-2 border-red-600 pb-2;
+  }
+
+  .popupBody {
+    @apply text-red-500 font-mono text-sm mb-6 space-y-2;
+  }
+
+  .acknowledgeBtn {
+    @apply w-full bg-red-600 text-black font-bold py-3 hover:bg-red-500 transition-colors uppercase tracking-wider text-lg;
+  }
+
+  /* Animations */
+  .glitch,
+  .glitchTitle,
+  .glitchTitleSmall {
+    position: relative;
+  }
+
+  .glitch::before,
+  .glitch::after,
+  .glitchTitle::before,
+  .glitchTitle::after,
+  .glitchTitleSmall::before,
+  .glitchTitleSmall::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .glitch::before,
+  .glitchTitle::before,
+  .glitchTitleSmall::before {
+    left: 2px;
+    text-shadow: -1px 0 #ff00c1;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+
+  .glitch::after,
+  .glitchTitle::after,
+  .glitchTitleSmall::after {
+    left: -2px;
+    text-shadow: -1px 0 #00fff9;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+  }
+
+  @keyframes glitch-anim {
+    0% {
+      clip: rect(14px, 9999px, 81px, 0);
+    }
+
+    20% {
+      clip: rect(25px, 9999px, 35px, 0);
+    }
+
+    40% {
+      clip: rect(96px, 9999px, 5px, 0);
+    }
+
+    60% {
+      clip: rect(2px, 9999px, 66px, 0);
+    }
+
+    80% {
+      clip: rect(61px, 9999px, 91px, 0);
+    }
+
+    100% {
+      clip: rect(81px, 9999px, 14px, 0);
+    }
+  }
+
+  @keyframes glitch-anim2 {
+    0% {
+      clip: rect(89px, 9999px, 7px, 0);
+    }
+
+    20% {
+      clip: rect(98px, 9999px, 15px, 0);
+    }
+
+    40% {
+      clip: rect(32px, 9999px, 73px, 0);
+    }
+
+    60% {
+      clip: rect(2px, 9999px, 59px, 0);
+    }
+
+    80% {
+      clip: rect(47px, 9999px, 33px, 0);
+    }
+
+    100% {
+      clip: rect(18px, 9999px, 92px, 0);
+    }
+  }
+
+  /* Dashboard Page */
+  .dashboardWrapper {
+    @apply min-h-screen relative overflow-hidden bg-black;
+  }
+
+  .matrixCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .scanlineOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    background: repeating-linear-gradient(0deg,
+        rgba(0, 0, 0, 0.15) 0px,
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px);
+  }
+
+  .dashboardMain {
+    @apply relative z-10 min-h-screen flex flex-col items-center justify-center p-6;
+  }
+
+  /* Boot Sequence */
+  .bootSequence {
+    @apply max-w-2xl w-full;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .skullArt {
+    @apply text-hacker-green text-xs leading-tight text-center mb-6;
+    font-family: monospace;
+    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+    white-space: pre;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .bootLines {
+    @apply font-mono text-sm space-y-1;
+  }
+
+  .bootLine {
+    @apply text-gray-500;
+    animation: fadeSlideIn 0.3s ease-out;
+  }
+
+  .bootLineHighlight {
+    @apply text-hacker-green font-bold text-lg mt-2;
+    text-shadow: 0 0 10px #0f0;
+    animation: fadeSlideIn 0.3s ease-out;
+  }
+
+  .cursor {
+    @apply text-hacker-green;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* Dashboard Grid */
+  .dashboardGrid {
+    @apply w-full max-w-5xl space-y-4;
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  .dashboardHeader {
+    @apply flex flex-wrap items-center justify-between gap-2 p-4 border border-hacker-green/20 rounded bg-black/80 backdrop-blur-sm;
+  }
+
+  .headerLeft {
+    @apply flex items-center gap-3;
+  }
+
+  .headerIcon {
+    @apply text-hacker-green text-xl;
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+
+  .headerTitle {
+    @apply text-hacker-green font-bold tracking-widest text-sm;
+  }
+
+  .headerRight {
+    @apply flex items-center gap-4;
+  }
+
+  .headerStatus {
+    @apply text-hacker-green text-xs tracking-wider;
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+
+  .logoutBtn {
+    @apply text-red-500/70 text-xs font-mono tracking-wider hover:text-red-400 transition-colors cursor-pointer;
+  }
+
+  /* Stats Row */
+  .statsRow {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  @media (min-width: 768px) {
+    .statsRow {
+      @apply grid-cols-4;
+    }
+  }
+
+  .statCardLive {
+    @apply flex items-center gap-3 border border-hacker-green/20 rounded p-3 bg-black/80 backdrop-blur-sm overflow-hidden;
+    transition: all 0.3s ease;
+    min-width: 0;
+  }
+
+  .statCardLive:hover {
+    @apply border-hacker-green/50;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.15);
+  }
+
+  .statIcon {
+    @apply text-xl;
+  }
+
+  .statInfo {
+    @apply flex-1 min-w-0;
+  }
+
+  .statValue {
+    @apply text-lg font-bold text-hacker-green truncate;
+    text-shadow: 0 0 5px #0f0;
+  }
+
+  .statLabel {
+    @apply text-xs text-gray-600 tracking-wider truncate;
+  }
+
+  .progressBarTrack {
+    @apply w-full h-1 bg-gray-800 rounded mt-1;
+  }
+
+  .progressBarFill {
+    @apply h-full rounded;
+    transition: width 1s ease;
+  }
+
+  /* Tabs */
+  .tabNav {
+    @apply flex gap-1;
+  }
+
+  .tabBtn {
+    @apply px-4 py-2 text-xs font-mono tracking-wider text-gray-600 border border-transparent cursor-pointer transition-all;
+  }
+
+  .tabBtnActive {
+    @apply text-hacker-green border-hacker-green/30 bg-black/60;
+  }
+
+  /* Terminal Panel */
+  .terminalPanel {
+    @apply border border-hacker-green/20 rounded bg-black/90 backdrop-blur-sm p-4 font-mono text-sm min-h-[300px] max-h-[400px] overflow-y-auto;
+  }
+
+  .terminalOutput {
+    @apply space-y-1 mb-3;
+  }
+
+  .terminalInput {
+    @apply text-hacker-green;
+  }
+
+  .terminalResponse {
+    @apply text-cyan-400 pl-4;
+  }
+
+  .terminalForm {
+    @apply flex items-center gap-2 border-t border-hacker-green/10 pt-3;
+  }
+
+  .terminalPrompt {
+    @apply text-hacker-green text-xs;
+  }
+
+  .terminalInputField {
+    @apply flex-1 bg-transparent text-hacker-green outline-none border-none text-sm;
+    caret-color: #0f0;
+  }
+
+  /* Network Log */
+  .networkLogContainer {
+    @apply font-mono text-xs space-y-1;
+  }
+
+  .networkLogHeader {
+    @apply grid grid-cols-5 gap-2 text-gray-600 border-b border-hacker-green/10 pb-2 mb-2 tracking-wider;
+    min-width: 0;
+  }
+
+  .networkLogHeader span,
+  .networkLogRow span {
+    @apply truncate;
+  }
+
+  .networkLogRow {
+    @apply grid grid-cols-5 gap-2 py-1;
+    animation: fadeSlideIn 0.3s ease-out;
+    min-width: 0;
+  }
+
+  .networkLogRowNew {
+    @apply text-hacker-green;
+  }
+
+  .logTime {
+    @apply text-gray-500;
+  }
+
+  .logIp {
+    @apply text-cyan-400;
+  }
+
+  .logPort {
+    @apply text-yellow-500;
+  }
+
+  .logAction {
+    @apply text-gray-400;
+  }
+
+  .logStatusAllowed {
+    @apply text-hacker-green;
+  }
+
+  .logStatusBlocked {
+    @apply text-red-500;
+  }
+
+  /* Keyframes */
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glowPulse {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes blink {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Reusable Semantic Classes */
+  .alertPulse {
+    @apply animate-pulse;
+  }
+
+  .monoText {
+    @apply font-mono;
+  }
+
+  .inputFieldWithToggle {
+    @apply bg-gray-900/50 border border-gray-700 w-full py-3 px-4 pr-10 rounded text-hacker-green transition-all duration-300 placeholder-gray-700/50 outline-none;
+  }
+
+  .inputFieldWithToggle:focus {
+    @apply border-hacker-green shadow-[0_0_10px_rgba(0, 255, 0, 0.3)];
+  }
+
+  .toggleIcon {
+    @apply w-5 h-5;
+  }
+
+  .otpTimerWrapper {
+    @apply relative;
+  }
+
+  .otpTimer {
+    @apply absolute right-4 top-1/2 transform -translate-y-1/2 font-mono text-xl text-hacker-green;
+  }
+
+  .otpTimerDanger {
+    @apply absolute right-4 top-1/2 transform -translate-y-1/2 font-mono text-xl text-red-500 animate-pulse;
+  }
+}
