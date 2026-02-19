@@ -80,7 +80,7 @@ const Login = () => {
 
             <form onSubmit={handleSubmit} className="formContainer">
                 <div className="inputGroup">
-                    <label className="inputLabel">{'>'} EMAIL_ADDRESS</label>
+                    <label className="inputLabel">{'>'} CONTACT_LINK </label>
                     <div className="inputWrapper">
                         <input
                             type="text"

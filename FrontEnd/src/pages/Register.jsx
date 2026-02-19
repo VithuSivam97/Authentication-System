@@ -198,7 +198,7 @@ const Register = () => {
                             value={formData.username}
                             onChange={handleChange}
                             className="inputField"
-                            placeholder="Neo"
+                            placeholder="Your Name"
                         />
                     </div>
 
@@ -210,7 +210,7 @@ const Register = () => {
                             value={formData.email}
                             onChange={handleChange}
                             className="inputField"
-                            placeholder="neo@matrix.org"
+                            placeholder="Your Email"
                         />
                     </div>
 

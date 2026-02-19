@@ -201,7 +201,7 @@ function ForgotAccessCode() {
             {step === 1 && (
                 <form onSubmit={handleEmailSubmit} className="formContainer">
                     <div className="inputGroup">
-                        <label className="inputLabel">{'>'} TARGET_EMAIL</label>
+                        <label className="inputLabel">{'>'} CONTACT_LINK </label>
                         <input
                             type="text"
                             value={email}
