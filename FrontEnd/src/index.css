@@ -597,7 +597,7 @@
   }
 
   .inputFieldWithToggle:focus {
-    @apply border-hacker-green shadow-[0_0_10px_rgba(0, 255, 0, 0.3)];
+    @apply border-hacker-green shadow-[0_0_10px_#00ff004d];
   }
 
   .toggleIcon {
